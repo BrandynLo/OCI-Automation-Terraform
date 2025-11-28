@@ -3,30 +3,38 @@
 [![OCI Provider](https://img.shields.io/badge/OCI%20Provider-v5%2B-orange.svg)](https://registry.terraform.io/providers/hashicorp/oci/latest)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
----
-This Terraform module provisions the **Automatation of VM creation with SSH access alongside private Virtual Cloud Network (VCN)** in Oracle Cloud Infrastructure (OCI).
+This Terraform module provisions **multiple Ubuntu VMs with public SSH access in a dedicated Virtual Cloud Network (VCN)** on Oracle Cloud Infrastructure (OCI) Free Tier.
 
----
-Overview This module creates:    
+### What this module creates:
+
 - **1 Virtual Cloud Network (VCN)**  
-  CIDR: `172.16.0.0/20`
+  CIDR: `172.16.0.0/20`  
+  DNS Label: `internal`
 
-- **1 Public Subnet**  
-  CIDR: `172.16.1.0/24`
+- **1 Public Subnet** (in the first Availability Domain)  
+  CIDR: `172.16.1.0/24`  
+  Automatically assigns public IPs to VNICs
 
-- ** X amount of Ubuntu VMs**  
-  OS: Ubuntu 22.04 or 24.04 (latest canonical images)  
-  Shape: `VM.Standard.E2.1.Micro` or `VM.Standard2.1` (Free Tier eligible)  
+- **Configurable number of Ubuntu 22.04 VMs** (default: 2, up to length of `vm_names`)  
+  - Latest Canonical Ubuntu 22.04 image compatible with selected shape  
+  - Shape: `VM.Standard2.1` (Always Free eligible)  
+  - Customizable instance names via `vm_names` variable (falls back to `vm-1`, `vm-2`, etc.)  
+  - SSH key automatically injected from `~/.ssh/my_oci_key.pub`
 
 - **Full Internet Access**  
   - Internet Gateway  
-  - Route Table with default route `0.0.0.0/0 → IGW`
+  - Route Table with default route `0.0.0.0/0 → Internet Gateway`
 
-- **SSH-ready Security Rules**  
-  - Security List allows TCP/22 from `0.0.0.0/0`  
-  - Ephemeral Public IPs automatically assigned
----
+- **SSH Access from Anywhere**  
+  - Security List allows inbound TCP/22 from `0.0.0.0/0`  
+  - All egress traffic permitted  
+  - Each VM gets an **ephemeral public IP**
 
+### Outputs provided:
+- `vm_ips` → Map of instance name → public IP  
+- `ssh_commands` → Ready-to-copy `ssh -i ~/.ssh/my_oci_key ubuntu@<public_ip>` commands for each VM
+
+Perfect for development, testing, learning labs, or lightweight public-facing services on OCI.
 
 ## Prerequisites
 | Requirement | Details |
