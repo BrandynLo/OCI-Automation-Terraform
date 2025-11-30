@@ -174,7 +174,7 @@ Upload Objects > Import your OCI Image file.
 
 
 # Apply the configuration to create the VCN:
-- You will be prompted for your compartment OCID which is located in your compartment on the OCI website. 
+- You will be prompted for your compartment OCID which is located in your compartment you made on the OCI website. 
 - Below is Code Syntax:
 ```bash
 # 1. Deploy
