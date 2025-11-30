@@ -189,17 +189,11 @@ terraform apply -var="compartment_id=..." -var='vm_names=["web1","db1","app1"]'
 # 4. Both together
 terraform apply -var="compartment_id=..." -var="vm_count=5" -var='vm_names=["web1","db2","app1","cache1","cache2"]'
 ```
-<img width="394" height="952" alt="Screenshot 2025-11-28 124044" src="https://github.com/user-attachments/assets/eebbc651-40c6-46b0-8bc3-df96b9023bb1" />
-
 
 **Verify VMs and SSH functions**:
 <img width="1919" height="520" alt="image" src="https://github.com/user-attachments/assets/b30d653e-a191-4dfe-bb2c-8d856a6bf57c" />
 
 <img width="1174" height="927" alt="image" src="https://github.com/user-attachments/assets/d36f123f-9007-4638-93d6-2a8536325fa7" />
-
--Ignore the "Debian" comment-- I previously tried to upload Debian Images and forgot to change it back to Ubuntu. Edited this in the main.tf. 
-
--Full IP is hidden to protect my personal public IPs made for the VMs. 
 
 -To delete the containers:
 ```bash
