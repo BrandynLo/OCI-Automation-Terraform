@@ -3,47 +3,39 @@
 [![OCI Provider](https://img.shields.io/badge/OCI%20Provider-v5%2B-orange.svg)](https://registry.terraform.io/providers/hashicorp/oci/latest)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-This Terraform repo provisions **multiple Ubuntu VMs with public SSH access in a dedicated Virtual Cloud Network (VCN)** on Oracle Cloud Infrastructure (OCI).
+A very redamentary version of using Terraform to automate VM creation using Oracle Cloud Infrastructure. 
 
-### What this module creates:
 
-- **1 Virtual Cloud Network (VCN)**  
-  CIDR: `172.16.0.0/20`  
-  DNS Label: `internal`
+## Infrastructure Overview
 
-- **1 Public Subnet** (in the first Availability Domain)  
-  CIDR: `172.16.1.0/24`  
-  Automatically assigns public IPs to VNICs
+### Network Configuration
+- **VCN CIDR**: `172.16.0.0/20`
+- **DNS Label**: `internal`
+- **Public Subnet**: `172.16.1.0/24` (Availability Domain 1)
+- Auto-assigned public IPs enabled
 
-- **Configurable number of Ubuntu 22.04 VMs** (default: 2, up to length of `vm_names`)  
-  - Latest Canonical Ubuntu 22.04 image compatible with selected shape  
-  - Shape: `VM.Standard2.1` (Always Free eligible)  
-  - Customizable instance names via `vm_names` variable (falls back to `vm-1`, `vm-2`, etc.)  
-  - SSH key automatically injected from `~/.ssh/my_oci_key.pub`
+### Compute Instances
+- **OS**: Ubuntu 22.04 LTS (latest compatible image)
+- **Shape**: `VM.Standard2.1`
+- **Count**: Configurable via `vm_names` variable
+- **SSH Key**: Auto-injected from `~/.ssh/my_oci_key.pub`
 
-- **Full Internet Access**  
-  - Internet Gateway  
-  - Route Table with default route `0.0.0.0/0 → Internet Gateway`
-
-- **SSH Access from Anywhere**  
-  - Security List allows inbound TCP/22 from `0.0.0.0/0`  
-  - All egress traffic permitted  
-  - Each VM gets an **ephemeral public IP**
-
-### Outputs provided:
-- `vm_ips` → Map of instance name → public IP  
-- `ssh_commands` → Ready-to-copy `ssh -i ~/.ssh/my_oci_key ubuntu@<public_ip>` commands for each VM
-
-Perfect for development, testing, learning labs, or lightweight public-facing services on OCI.
+### Connectivity
+- **Internet Gateway**: Full outbound access via default route (`0.0.0.0/0`)
+- **SSH Access**: Port 22 open from `0.0.0.0/0`
+- **Public IPs**: Ephemeral IP assigned to each VM
 
 ## Prerequisites
-| Requirement | Details |
+
+| Component | Version |
 |-----------|---------|
-| **OCI Account** | Free Tier or Paid [](https://www.oracle.com/cloud/) |
-| **Terraform** | `v1.5+` |
-| **OCI CLI** | Latest version |
-| **OS** | Tested on **Ubuntu 22.04+** (VM or local) |
-## Install Terraform (Ubuntu/Debian)
+| OCI Account | [Free Tier or Paid](https://www.oracle.com/cloud/) |
+| Terraform | 1.5+ |
+| OCI CLI | Latest |
+| OS | Ubuntu 22.04+ |
+
+
+## Install Terraform
 ```bash
 sudo apt update && sudo apt install -y gnupg software-properties-common
 wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
