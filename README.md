@@ -3,7 +3,7 @@
 [![OCI Provider](https://img.shields.io/badge/OCI%20Provider-v5%2B-orange.svg)](https://registry.terraform.io/providers/hashicorp/oci/latest)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-A very redamentary version of using Terraform to automate VM creation using Oracle Cloud Infrastructure. 
+Initial start where I learned Terraform to automate VM creation using Oracle Cloud Infrastructure. 
 
 
 ## Infrastructure Overview
